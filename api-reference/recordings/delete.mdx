@@ -1,0 +1,57 @@
+---
+title: Delete Recording
+api: DELETE /v1/recordings/{id}
+description: 'Permanently delete a recording and its transcript'
+---
+
+Permanently deletes a recording, its audio file, and transcript. This action cannot be undone.
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  The recording ID
+</ParamField>
+
+## Request
+
+<CodeGroup>
+```bash cURL
+curl -X DELETE "https://app.transcord.app/api/v1/recordings/clx1234567890" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```javascript Node.js
+const recordingId = 'clx1234567890';
+const response = await fetch(`https://app.transcord.app/api/v1/recordings/${recordingId}`, {
+  method: 'DELETE',
+  headers: {
+    'Authorization': 'Bearer tr_live_your_api_key'
+  }
+});
+```
+
+```python Python
+import requests
+
+recording_id = 'clx1234567890'
+response = requests.delete(
+    f'https://app.transcord.app/api/v1/recordings/{recording_id}',
+    headers={'Authorization': 'Bearer tr_live_your_api_key'}
+)
+```
+</CodeGroup>
+
+## Response
+
+```json Response
+{
+  "success": true
+}
+```
+
+## Errors
+
+| Status | Description |
+|--------|-------------|
+| `401` | Invalid or missing API key |
+| `404` | Recording not found |

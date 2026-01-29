@@ -1,0 +1,115 @@
+---
+title: Authentication
+description: 'How to authenticate with the Transcord API'
+---
+
+## API Keys
+
+The Transcord API uses API keys for authentication. Include your key in the `Authorization` header with every request.
+
+```bash
+Authorization: Bearer tr_live_your_api_key
+```
+
+### Getting an API Key
+
+1. Log in to your [Transcord account](https://app.transcord.app/login)
+2. Go to [Settings](https://app.transcord.app/settings)
+3. Scroll to "API Access" and click **Generate API Key**
+4. Copy your key immediately - it won't be shown again
+
+<Warning>
+  API access requires a **Pro** or **Business** subscription.
+</Warning>
+
+### API Key Format
+
+All Transcord API keys start with `tr_live_` followed by a random string:
+
+```
+tr_live_aBcDeFgHiJkLmNoPqRsTuVwXyZ12
+```
+
+### Example Request
+
+```bash
+curl -X GET "https://app.transcord.app/api/v1/me" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+## Security Best Practices
+
+<AccordionGroup>
+  <Accordion title="Never expose keys in client-side code">
+    API keys should only be used in server-side code. Never include them in JavaScript that runs in the browser, mobile apps, or any code that users can inspect.
+  </Accordion>
+
+  <Accordion title="Use environment variables">
+    Store your API key in environment variables, not in your source code:
+
+    ```bash .env
+    TRANSCORD_API_KEY=tr_live_your_api_key
+    ```
+
+    ```javascript
+    const apiKey = process.env.TRANSCORD_API_KEY;
+    ```
+  </Accordion>
+
+  <Accordion title="Rotate keys periodically">
+    Generate a new API key periodically and update your applications. This limits the impact if a key is compromised.
+  </Accordion>
+
+  <Accordion title="Revoke compromised keys immediately">
+    If you suspect your API key has been exposed, revoke it immediately in [Settings](https://app.transcord.app/settings) and generate a new one.
+  </Accordion>
+</AccordionGroup>
+
+## Rate Limits
+
+API requests are limited to **100 requests per minute** per API key.
+
+If you exceed this limit, you'll receive a `429 Too Many Requests` response:
+
+```json
+{
+  "error": "Rate limit exceeded. Please wait before making more requests."
+}
+```
+
+## OAuth 2.0 (MCP Integration)
+
+For MCP (Model Context Protocol) integrations with Claude AI, Transcord supports OAuth 2.0 with PKCE. This allows Claude to access your recordings on your behalf.
+
+See the [MCP Integration guide](/guides/mcp-integration) for setup instructions.
+
+## Error Responses
+
+### 401 Unauthorized
+
+Your API key is missing, invalid, or has been revoked.
+
+```json
+{
+  "error": "Unauthorized"
+}
+```
+
+**Solutions:**
+- Check that you're including the `Authorization` header
+- Verify your API key is correct (starts with `tr_live_`)
+- Generate a new key if yours was revoked
+
+### 403 Forbidden
+
+Your API key is valid but you don't have access to the requested resource.
+
+```json
+{
+  "error": "Forbidden"
+}
+```
+
+**Solutions:**
+- Make sure you're accessing your own recordings
+- Check that your subscription is active

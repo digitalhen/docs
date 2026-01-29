@@ -1,0 +1,149 @@
+---
+title: Claude AI Integration (MCP)
+description: 'Connect Transcord to Claude AI for natural language search and analysis'
+---
+
+Transcord integrates with Claude AI through the Model Context Protocol (MCP). This lets you search and analyze your recordings using natural language directly in Claude.
+
+## What you can do
+
+- **Search transcripts** - "Find calls where we discussed the merger"
+- **Summarize calls** - "Summarize my call with John from yesterday"
+- **Extract information** - "What did the source say about the budget?"
+- **Analyze patterns** - "How many calls did I make last week?"
+
+## Setup with Claude.ai
+
+<Steps>
+  <Step title="Open Claude.ai Settings">
+    Go to [claude.ai](https://claude.ai) and click on your profile, then **Settings**.
+  </Step>
+  <Step title="Navigate to Integrations">
+    Click on **Integrations** in the settings menu.
+  </Step>
+  <Step title="Add Transcord">
+    Click **Add Integration** and enter:
+
+    ```
+    https://mcp.transcord.app
+    ```
+  </Step>
+  <Step title="Authorize">
+    You'll be redirected to Transcord to authorize the connection. Click **Allow** to grant Claude access to your recordings.
+  </Step>
+</Steps>
+
+<Info>
+  MCP integration requires a **Pro** or **Business** subscription.
+</Info>
+
+## Setup with Claude Desktop
+
+Add Transcord to your Claude Desktop configuration file.
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    Edit `~/.config/claude/claude_desktop_config.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "transcord": {
+          "url": "https://mcp.transcord.app"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Windows">
+    Edit `%APPDATA%\Claude\claude_desktop_config.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "transcord": {
+          "url": "https://mcp.transcord.app"
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+Restart Claude Desktop after saving the file. You'll be prompted to authorize Transcord on first use.
+
+## Example Prompts
+
+Once connected, try these prompts in Claude:
+
+<AccordionGroup>
+  <Accordion title="Search for topics">
+    ```
+    Search my Transcord recordings for any calls where we discussed
+    the upcoming product launch.
+    ```
+  </Accordion>
+
+  <Accordion title="Summarize a call">
+    ```
+    Get my most recent Transcord recording and give me a summary
+    of the key points discussed.
+    ```
+  </Accordion>
+
+  <Accordion title="Find quotes">
+    ```
+    Find calls from last week where the other person mentioned
+    "budget" or "funding" and extract the relevant quotes.
+    ```
+  </Accordion>
+
+  <Accordion title="Analyze call patterns">
+    ```
+    Look at my Transcord recordings from this month. How many calls
+    did I make? What's the average duration?
+    ```
+  </Accordion>
+
+  <Accordion title="Prepare for a follow-up">
+    ```
+    Find my last call with someone at the 415 area code and remind
+    me what we discussed so I can prepare for a follow-up.
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Available MCP Tools
+
+When connected, Claude has access to these Transcord tools:
+
+| Tool | Description |
+|------|-------------|
+| `list_recordings` | Search and list your recordings |
+| `get_recording` | Get details and transcript for a specific recording |
+| `search_transcripts` | Full-text search across all transcripts |
+
+## Security & Privacy
+
+- **OAuth 2.0** - Claude authenticates using industry-standard OAuth with PKCE
+- **Your data stays yours** - Claude only accesses recordings when you ask
+- **Revoke anytime** - Disconnect Transcord from [Settings](https://app.transcord.app/settings)
+- **Scoped access** - Claude can only read recordings, not delete or modify them
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Claude doesn't see Transcord">
+    1. Make sure you've added the integration in Claude settings
+    2. Check that you authorized Transcord when prompted
+    3. Verify you have a Pro or Business subscription
+  </Accordion>
+
+  <Accordion title="'Not authorized' errors">
+    The OAuth token may have expired. Remove and re-add the Transcord integration in Claude settings.
+  </Accordion>
+
+  <Accordion title="No recordings found">
+    Make sure you've made some calls through Transcord first. New accounts start empty.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,90 @@
+---
+title: Get Current User
+api: GET /v1/me
+description: 'Get information about the authenticated user and their subscription'
+---
+
+Returns the current user's account details and subscription status.
+
+## Request
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://app.transcord.app/api/v1/me" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```javascript Node.js
+const response = await fetch('https://app.transcord.app/api/v1/me', {
+  headers: {
+    'Authorization': 'Bearer tr_live_your_api_key'
+  }
+});
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://app.transcord.app/api/v1/me',
+    headers={'Authorization': 'Bearer tr_live_your_api_key'}
+)
+data = response.json()
+```
+</CodeGroup>
+
+## Response
+
+<ResponseField name="user" type="object">
+  <Expandable title="properties">
+    <ResponseField name="id" type="string">
+      Unique user identifier
+    </ResponseField>
+    <ResponseField name="email" type="string">
+      User's email address
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      User's display name (may be null)
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="subscription" type="object">
+  <Expandable title="properties">
+    <ResponseField name="status" type="string">
+      Subscription status: `active`, `canceled`, `past_due`, or `none`
+    </ResponseField>
+    <ResponseField name="plan" type="string">
+      Current plan: `starter`, `pro`, `business`, or `none`
+    </ResponseField>
+    <ResponseField name="minutesUsed" type="number">
+      Total recording minutes used this billing period
+    </ResponseField>
+    <ResponseField name="minutesRemaining" type="number">
+      Recording minutes remaining (null for unlimited plans)
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+```json Response
+{
+  "user": {
+    "id": "clx1234567890",
+    "email": "you@example.com",
+    "name": "Your Name"
+  },
+  "subscription": {
+    "status": "active",
+    "plan": "pro",
+    "minutesUsed": 127,
+    "minutesRemaining": 273
+  }
+}
+```
+
+## Errors
+
+| Status | Description |
+|--------|-------------|
+| `401` | Invalid or missing API key |

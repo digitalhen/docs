@@ -1,0 +1,156 @@
+---
+title: Get Transcript
+api: GET /v1/recordings/{id}/transcript
+description: 'Get the transcript in JSON, plain text, or SRT format'
+---
+
+Returns the transcript for a recording in your preferred format.
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  The recording ID
+</ParamField>
+
+## Query Parameters
+
+<ParamField query="format" type="string" default="json">
+  Output format: `json`, `text`, or `srt`
+</ParamField>
+
+## Request
+
+<CodeGroup>
+```bash cURL (JSON)
+curl -X GET "https://app.transcord.app/api/v1/recordings/clx1234567890/transcript" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```bash cURL (Plain Text)
+curl -X GET "https://app.transcord.app/api/v1/recordings/clx1234567890/transcript?format=text" \
+  -H "Authorization: Bearer tr_live_your_api_key" \
+  -o transcript.txt
+```
+
+```bash cURL (SRT Subtitles)
+curl -X GET "https://app.transcord.app/api/v1/recordings/clx1234567890/transcript?format=srt" \
+  -H "Authorization: Bearer tr_live_your_api_key" \
+  -o transcript.srt
+```
+</CodeGroup>
+
+## Response Formats
+
+### JSON Format (default)
+
+Returns the full transcript with word-level timestamps and speaker identification.
+
+<ResponseField name="recordingId" type="string">
+  The recording ID
+</ResponseField>
+
+<ResponseField name="duration" type="number">
+  Call duration in seconds
+</ResponseField>
+
+<ResponseField name="toNumber" type="string">
+  Destination phone number
+</ResponseField>
+
+<ResponseField name="fromNumber" type="string">
+  Caller phone number
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  ISO 8601 timestamp
+</ResponseField>
+
+<ResponseField name="transcript" type="object">
+  <Expandable title="properties">
+    <ResponseField name="text" type="string">
+      Full transcript as plain text
+    </ResponseField>
+    <ResponseField name="wordCount" type="number">
+      Total number of words
+    </ResponseField>
+    <ResponseField name="words" type="array">
+      Word-level transcript with timestamps
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+```json Response (JSON)
+{
+  "recordingId": "clx1234567890",
+  "duration": 342,
+  "toNumber": "+14155551234",
+  "fromNumber": "+14155555678",
+  "createdAt": "2026-01-15T10:30:00.000Z",
+  "transcript": {
+    "text": "Hello, this is John calling about the interview...",
+    "wordCount": 847,
+    "words": [
+      {
+        "word": "Hello,",
+        "start": 0.5,
+        "end": 0.9,
+        "speaker": "you"
+      },
+      {
+        "word": "this",
+        "start": 1.0,
+        "end": 1.2,
+        "speaker": "you"
+      }
+    ]
+  }
+}
+```
+
+### Plain Text Format
+
+Returns just the transcript text without timestamps. Useful for reading or text processing.
+
+```text Response (text)
+Hello, this is John calling about the interview. I wanted to follow up on our conversation from last week...
+```
+
+### SRT Subtitle Format
+
+Returns the transcript as SRT subtitles, suitable for video editing software.
+
+```srt Response (SRT)
+1
+00:00:00,500 --> 00:00:05,200
+Hello, this is John calling about the interview.
+
+2
+00:00:05,800 --> 00:00:10,100
+I wanted to follow up on our conversation from last week.
+
+3
+00:00:11,000 --> 00:00:15,500
+Hi John, thanks for calling back.
+```
+
+## Transcript Not Ready
+
+If the transcript is still being processed, you'll receive a `202 Accepted` response:
+
+```json
+{
+  "error": "Transcript not ready",
+  "status": "transcribing"
+}
+```
+
+Poll again in a few seconds. See [Working with Transcripts](/guides/transcripts#transcript-not-ready) for status values.
+
+## Errors
+
+| Status | Description |
+|--------|-------------|
+| `202` | Transcript is still processing |
+| `400` | Invalid format parameter |
+| `401` | Invalid or missing API key |
+| `404` | Recording not found |

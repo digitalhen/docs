@@ -1,0 +1,111 @@
+---
+title: API Overview
+description: 'Overview of the Transcord API endpoints'
+---
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://app.transcord.app/api/v1
+```
+
+## Authentication
+
+Include your API key in the `Authorization` header:
+
+```bash
+Authorization: Bearer tr_live_your_api_key
+```
+
+See [Authentication](/authentication) for details on getting and managing API keys.
+
+## Endpoints
+
+### Account
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | [`/v1/me`](/api-reference/account/get-me) | Get current user and subscription info |
+
+### Recordings
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | [`/v1/recordings`](/api-reference/recordings/list) | List all recordings |
+| GET | [`/v1/recordings/:id`](/api-reference/recordings/get) | Get a single recording with transcript |
+| DELETE | [`/v1/recordings/:id`](/api-reference/recordings/delete) | Delete a recording |
+| GET | [`/v1/recordings/:id/transcript`](/api-reference/recordings/get-transcript) | Get transcript in various formats |
+| GET | [`/v1/recordings/:id/audio`](/api-reference/recordings/get-audio) | Get audio file URL |
+
+## Response Format
+
+All responses are JSON with consistent structure:
+
+### Success Response
+
+```json
+{
+  "data": [...],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 100,
+    "totalPages": 5,
+    "hasMore": true
+  }
+}
+```
+
+### Error Response
+
+```json
+{
+  "error": "Description of what went wrong"
+}
+```
+
+## HTTP Status Codes
+
+| Code | Meaning |
+|------|---------|
+| `200` | Success |
+| `202` | Accepted - Resource is still processing |
+| `400` | Bad Request - Invalid parameters |
+| `401` | Unauthorized - Invalid or missing API key |
+| `403` | Forbidden - Valid key but no access to resource |
+| `404` | Not Found - Resource doesn't exist |
+| `429` | Too Many Requests - Rate limit exceeded |
+| `500` | Internal Server Error |
+
+## Rate Limits
+
+- **100 requests per minute** per API key
+- Rate limit headers are included in responses:
+  - `X-RateLimit-Limit`: Maximum requests per window
+  - `X-RateLimit-Remaining`: Requests remaining
+  - `X-RateLimit-Reset`: Unix timestamp when limit resets
+
+## Pagination
+
+List endpoints support pagination with these parameters:
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `page` | integer | 1 | Page number (1-indexed) |
+| `limit` | integer | 20 | Results per page (max 100) |
+
+Response includes pagination info:
+
+```json
+{
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 47,
+    "totalPages": 3,
+    "hasMore": true
+  }
+}
+```

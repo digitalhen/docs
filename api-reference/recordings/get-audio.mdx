@@ -1,0 +1,97 @@
+---
+title: Get Audio
+api: GET /v1/recordings/{id}/audio
+description: 'Get the audio file URL for a recording'
+---
+
+Returns a URL to download or stream the audio file for a recording.
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  The recording ID
+</ParamField>
+
+## Request
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://app.transcord.app/api/v1/recordings/clx1234567890/audio" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```javascript Node.js
+const recordingId = 'clx1234567890';
+const response = await fetch(`https://app.transcord.app/api/v1/recordings/${recordingId}/audio`, {
+  headers: {
+    'Authorization': 'Bearer tr_live_your_api_key'
+  }
+});
+const { url } = await response.json();
+
+// Download the audio file
+const audioResponse = await fetch(url);
+const audioBuffer = await audioResponse.arrayBuffer();
+```
+
+```python Python
+import requests
+
+recording_id = 'clx1234567890'
+response = requests.get(
+    f'https://app.transcord.app/api/v1/recordings/{recording_id}/audio',
+    headers={'Authorization': 'Bearer tr_live_your_api_key'}
+)
+data = response.json()
+
+# Download the audio file
+audio_response = requests.get(data['url'])
+with open('recording.wav', 'wb') as f:
+    f.write(audio_response.content)
+```
+</CodeGroup>
+
+## Response
+
+<ResponseField name="url" type="string">
+  Signed URL to download the audio file. Valid for 1 hour.
+</ResponseField>
+
+<ResponseField name="contentType" type="string">
+  Audio MIME type (typically `audio/wav` or `audio/mpeg`)
+</ResponseField>
+
+<ResponseField name="duration" type="number">
+  Audio duration in seconds
+</ResponseField>
+
+```json Response
+{
+  "url": "https://api.twilio.com/...",
+  "contentType": "audio/wav",
+  "duration": 342
+}
+```
+
+<Info>
+  The URL is a signed URL that expires after 1 hour. If you need long-term access, download the file and store it yourself.
+</Info>
+
+## Audio Not Ready
+
+If the recording is still being processed, you'll receive a `202 Accepted` response:
+
+```json
+{
+  "error": "Recording not ready",
+  "status": "processing"
+}
+```
+
+## Errors
+
+| Status | Description |
+|--------|-------------|
+| `202` | Recording is still processing |
+| `401` | Invalid or missing API key |
+| `404` | Recording not found |

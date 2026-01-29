@@ -1,0 +1,190 @@
+---
+title: Working with Transcripts
+description: 'Understanding transcript formats, word timestamps, and speaker labels'
+---
+
+## Transcript Formats
+
+Transcord provides transcripts in three formats:
+
+| Format | Use Case |
+|--------|----------|
+| **JSON** | Programmatic access with word-level timestamps and speaker labels |
+| **Text** | Simple plain text for reading or processing |
+| **SRT** | Subtitle format for video editing software |
+
+## JSON Format (Default)
+
+The JSON format includes the full transcript text plus word-level timing and speaker information.
+
+```bash
+curl -X GET "https://app.transcord.app/api/v1/recordings/RECORDING_ID/transcript" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```json Response
+{
+  "recordingId": "clx1234567890",
+  "duration": 342,
+  "toNumber": "+14155551234",
+  "fromNumber": "+14155555678",
+  "createdAt": "2026-01-15T10:30:00.000Z",
+  "transcript": {
+    "text": "Hello, this is John calling about the interview...",
+    "wordCount": 847,
+    "words": [
+      {
+        "word": "Hello,",
+        "start": 0.5,
+        "end": 0.9,
+        "speaker": "you"
+      },
+      {
+        "word": "this",
+        "start": 1.0,
+        "end": 1.2,
+        "speaker": "you"
+      },
+      {
+        "word": "Hi",
+        "start": 2.1,
+        "end": 2.3,
+        "speaker": "them"
+      }
+    ]
+  }
+}
+```
+
+### Word Object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `word` | string | The transcribed word including punctuation |
+| `start` | number | Start time in seconds from beginning of recording |
+| `end` | number | End time in seconds |
+| `speaker` | string | `"you"` (caller) or `"them"` (recipient) |
+
+## Plain Text Format
+
+Get just the transcript text without timestamps:
+
+```bash
+curl -X GET "https://app.transcord.app/api/v1/recordings/RECORDING_ID/transcript?format=text" \
+  -H "Authorization: Bearer tr_live_your_api_key" \
+  -o transcript.txt
+```
+
+```text Response
+Hello, this is John calling about the interview. I wanted to follow up on our conversation from last week...
+```
+
+## SRT Subtitle Format
+
+Get the transcript as SRT subtitles for video editing:
+
+```bash
+curl -X GET "https://app.transcord.app/api/v1/recordings/RECORDING_ID/transcript?format=srt" \
+  -H "Authorization: Bearer tr_live_your_api_key" \
+  -o transcript.srt
+```
+
+```srt Response
+1
+00:00:00,500 --> 00:00:05,200
+Hello, this is John calling about the interview.
+
+2
+00:00:05,800 --> 00:00:10,100
+I wanted to follow up on our conversation from last week.
+
+3
+00:00:11,000 --> 00:00:15,500
+Hi John, thanks for calling back.
+```
+
+## Working with Timestamps
+
+### Jump to a specific moment
+
+Use the `start` timestamp to link directly to a moment in the audio:
+
+```javascript
+// Find when a specific phrase was said
+const words = transcript.words;
+const targetPhrase = "the contract";
+
+const match = words.find(w =>
+  w.word.toLowerCase().includes(targetPhrase.split(' ')[0])
+);
+
+if (match) {
+  console.log(`"${targetPhrase}" was said at ${match.start} seconds`);
+  // Use this timestamp with the audio player
+}
+```
+
+### Extract quotes with timestamps
+
+```javascript
+// Extract a quote between two timestamps
+function extractQuote(words, startTime, endTime) {
+  return words
+    .filter(w => w.start >= startTime && w.end <= endTime)
+    .map(w => w.word)
+    .join(' ');
+}
+
+const quote = extractQuote(transcript.words, 45.0, 52.5);
+console.log(`Quote: "${quote}"`);
+```
+
+### Group by speaker
+
+```javascript
+// Group consecutive words by speaker
+function groupBySpeaker(words) {
+  const groups = [];
+  let currentGroup = null;
+
+  for (const word of words) {
+    if (!currentGroup || currentGroup.speaker !== word.speaker) {
+      currentGroup = { speaker: word.speaker, text: '', start: word.start };
+      groups.push(currentGroup);
+    }
+    currentGroup.text += word.word + ' ';
+    currentGroup.end = word.end;
+  }
+
+  return groups;
+}
+```
+
+## Dual-Channel Recording
+
+Transcord records calls in dual-channel format, meaning your voice and the other party's voice are recorded on separate audio channels. This enables:
+
+- **Accurate speaker identification** - We know exactly who said what
+- **Better transcription quality** - No cross-talk confusion
+- **Clean audio separation** - Each speaker's audio is crystal clear
+
+The `speaker` field in the transcript reflects this:
+- `"you"` - Words spoken by you (the Transcord user)
+- `"them"` - Words spoken by the other party
+
+## Transcript Not Ready
+
+If you request a transcript before processing is complete, you'll receive a `202 Accepted` response:
+
+```json
+{
+  "error": "Transcript not ready",
+  "status": "transcribing"
+}
+```
+
+Poll again in a few seconds. Status values:
+- `processing` - Call just ended, preparing recording
+- `transcribing` - Audio is being transcribed
+- `completed` - Transcript is ready
+- `failed` - Transcription failed (rare)

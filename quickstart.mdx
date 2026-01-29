@@ -1,0 +1,140 @@
+---
+title: Quickstart
+description: 'Get started with the Transcord API in 5 minutes'
+---
+
+## 1. Get your API key
+
+<Steps>
+  <Step title="Log in to Transcord">
+    Go to [app.transcord.app](https://app.transcord.app/login) and sign in to your account.
+  </Step>
+  <Step title="Open Settings">
+    Navigate to [Settings](https://app.transcord.app/settings) from the menu.
+  </Step>
+  <Step title="Generate API Key">
+    Scroll to "API Access" and click **Generate API Key**.
+
+    <Warning>
+      Copy your API key immediately - it won't be shown again!
+    </Warning>
+  </Step>
+</Steps>
+
+## 2. Make your first request
+
+Test your API key by fetching your account info:
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://app.transcord.app/api/v1/me" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```javascript Node.js
+const response = await fetch('https://app.transcord.app/api/v1/me', {
+  headers: {
+    'Authorization': 'Bearer tr_live_your_api_key'
+  }
+});
+const data = await response.json();
+console.log(data);
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://app.transcord.app/api/v1/me',
+    headers={'Authorization': 'Bearer tr_live_your_api_key'}
+)
+print(response.json())
+```
+</CodeGroup>
+
+You should see a response like:
+
+```json
+{
+  "user": {
+    "id": "clx1234567890",
+    "email": "you@example.com",
+    "name": "Your Name"
+  },
+  "subscription": {
+    "status": "active",
+    "plan": "pro",
+    "minutesUsed": 127,
+    "minutesRemaining": 273
+  }
+}
+```
+
+## 3. List your recordings
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://app.transcord.app/api/v1/recordings?limit=5" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```javascript Node.js
+const response = await fetch('https://app.transcord.app/api/v1/recordings?limit=5', {
+  headers: {
+    'Authorization': 'Bearer tr_live_your_api_key'
+  }
+});
+const { data, pagination } = await response.json();
+console.log(`Found ${pagination.total} recordings`);
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://app.transcord.app/api/v1/recordings',
+    headers={'Authorization': 'Bearer tr_live_your_api_key'},
+    params={'limit': 5}
+)
+data = response.json()
+print(f"Found {data['pagination']['total']} recordings")
+```
+</CodeGroup>
+
+## 4. Get a transcript
+
+<CodeGroup>
+```bash cURL (JSON)
+curl -X GET "https://app.transcord.app/api/v1/recordings/RECORDING_ID/transcript" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```bash cURL (Plain text)
+curl -X GET "https://app.transcord.app/api/v1/recordings/RECORDING_ID/transcript?format=text" \
+  -H "Authorization: Bearer tr_live_your_api_key" \
+  -o transcript.txt
+```
+
+```bash cURL (SRT subtitles)
+curl -X GET "https://app.transcord.app/api/v1/recordings/RECORDING_ID/transcript?format=srt" \
+  -H "Authorization: Bearer tr_live_your_api_key" \
+  -o transcript.srt
+```
+</CodeGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Learn about API key security best practices
+  </Card>
+  <Card title="Working with Transcripts" icon="file-lines" href="/guides/transcripts">
+    Learn about transcript formats and word timestamps
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/overview">
+    Explore all available endpoints
+  </Card>
+  <Card title="MCP Integration" icon="robot" href="/guides/mcp-integration">
+    Connect Transcord to Claude AI
+  </Card>
+</CardGroup>

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Transcord API",
+  "colors": {
+    "primary": "#6366f1",
+    "light": "#818cf8",
+    "dark": "#4f46e5",
+    "anchors": {
+      "from": "#6366f1",
+      "to": "#8b5cf6"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Dashboard",
+      "url": "https://app.transcord.app/dashboard"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Started",
+    "url": "https://app.transcord.app/login"
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "API Status",
+      "icon": "signal",
+      "url": "https://status.transcord.app"
+    },
+    {
+      "name": "Support",
+      "icon": "envelope",
+      "url": "mailto:support@cleartextlabs.com"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "introduction",
+        "quickstart",
+        "authentication"
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "guides/transcripts",
+        "guides/mcp-integration"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/overview"
+      ]
+    },
+    {
+      "group": "Account",
+      "pages": [
+        "api-reference/account/get-me"
+      ]
+    },
+    {
+      "group": "Recordings",
+      "pages": [
+        "api-reference/recordings/list",
+        "api-reference/recordings/get",
+        "api-reference/recordings/delete",
+        "api-reference/recordings/get-transcript",
+        "api-reference/recordings/get-audio"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "website": "https://transcord.app"
+  },
+  "api": {
+    "baseUrl": "https://app.transcord.app/api",
+    "auth": {
+      "method": "bearer"
+    }
+  }
+}
