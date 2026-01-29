@@ -6,11 +6,7 @@
   "colors": {
     "primary": "#6366f1",
     "light": "#818cf8",
-    "dark": "#4f46e5",
-    "anchors": {
-      "from": "#6366f1",
-      "to": "#8b5cf6"
-    }
+    "dark": "#4f46e5"
   },
   "topbarLinks": [
     {
@@ -18,48 +14,27 @@
       "url": "https://cleartextlabs.com"
     }
   ],
-  "anchors": [
-    {
-      "name": "Support",
-      "icon": "envelope",
-      "url": "mailto:support@cleartextlabs.com"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "Overview",
-      "pages": [
-        "introduction"
-      ]
-    },
-    {
-      "group": "Transcord",
-      "pages": [
-        "transcord/introduction",
-        "transcord/quickstart",
-        "transcord/authentication"
-      ]
-    },
-    {
-      "group": "Guides",
-      "pages": [
-        "transcord/guides/transcripts",
-        "transcord/guides/mcp-integration"
-      ]
-    },
-    {
-      "group": "API Reference",
-      "pages": [
-        "transcord/api-reference/overview",
-        "transcord/api-reference/account/get-me",
-        "transcord/api-reference/recordings/list",
-        "transcord/api-reference/recordings/get",
-        "transcord/api-reference/recordings/delete",
-        "transcord/api-reference/recordings/get-transcript",
-        "transcord/api-reference/recordings/get-audio"
-      ]
-    }
-  ],
+  "navigation": {
+    "Overview": ["introduction"],
+    "Transcord": [
+      "transcord/introduction",
+      "transcord/quickstart",
+      "transcord/authentication"
+    ],
+    "Guides": [
+      "transcord/guides/transcripts",
+      "transcord/guides/mcp-integration"
+    ],
+    "API Reference": [
+      "transcord/api-reference/overview",
+      "transcord/api-reference/account/get-me",
+      "transcord/api-reference/recordings/list",
+      "transcord/api-reference/recordings/get",
+      "transcord/api-reference/recordings/delete",
+      "transcord/api-reference/recordings/get-transcript",
+      "transcord/api-reference/recordings/get-audio"
+    ]
+  },
   "footerSocials": {
     "website": "https://cleartextlabs.com"
   }
