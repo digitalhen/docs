@@ -17,12 +17,6 @@
       "url": "https://cleartextlabs.com"
     }
   ],
-  "tabs": [
-    {
-      "name": "Transcord",
-      "url": "transcord"
-    }
-  ],
   "anchors": [
     {
       "name": "Support",
@@ -38,7 +32,7 @@
       ]
     },
     {
-      "group": "Getting Started",
+      "group": "Transcord",
       "pages": [
         "transcord/introduction",
         "transcord/quickstart",
@@ -55,18 +49,8 @@
     {
       "group": "API Reference",
       "pages": [
-        "transcord/api-reference/overview"
-      ]
-    },
-    {
-      "group": "Account",
-      "pages": [
-        "transcord/api-reference/account/get-me"
-      ]
-    },
-    {
-      "group": "Recordings",
-      "pages": [
+        "transcord/api-reference/overview",
+        "transcord/api-reference/account/get-me",
         "transcord/api-reference/recordings/list",
         "transcord/api-reference/recordings/get",
         "transcord/api-reference/recordings/delete",
