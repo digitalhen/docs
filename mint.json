@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Transcord API",
+  "name": "Cleartext Labs",
   "colors": {
     "primary": "#6366f1",
     "light": "#818cf8",
@@ -12,26 +12,17 @@
   },
   "topbarLinks": [
     {
-      "name": "Dashboard",
-      "url": "https://app.transcord.app/dashboard"
+      "name": "Cleartext Labs",
+      "url": "https://cleartextlabs.com"
     }
   ],
-  "topbarCtaButton": {
-    "name": "Get Started",
-    "url": "https://app.transcord.app/login"
-  },
   "tabs": [
     {
-      "name": "API Reference",
-      "url": "api-reference"
+      "name": "Transcord",
+      "url": "transcord"
     }
   ],
   "anchors": [
-    {
-      "name": "API Status",
-      "icon": "signal",
-      "url": "https://status.transcord.app"
-    },
     {
       "name": "Support",
       "icon": "envelope",
@@ -40,50 +31,50 @@
   ],
   "navigation": [
     {
+      "group": "Overview",
+      "pages": [
+        "introduction"
+      ]
+    },
+    {
       "group": "Getting Started",
       "pages": [
-        "introduction",
-        "quickstart",
-        "authentication"
+        "transcord/introduction",
+        "transcord/quickstart",
+        "transcord/authentication"
       ]
     },
     {
       "group": "Guides",
       "pages": [
-        "guides/transcripts",
-        "guides/mcp-integration"
+        "transcord/guides/transcripts",
+        "transcord/guides/mcp-integration"
       ]
     },
     {
       "group": "API Reference",
       "pages": [
-        "api-reference/overview"
+        "transcord/api-reference/overview"
       ]
     },
     {
       "group": "Account",
       "pages": [
-        "api-reference/account/get-me"
+        "transcord/api-reference/account/get-me"
       ]
     },
     {
       "group": "Recordings",
       "pages": [
-        "api-reference/recordings/list",
-        "api-reference/recordings/get",
-        "api-reference/recordings/delete",
-        "api-reference/recordings/get-transcript",
-        "api-reference/recordings/get-audio"
+        "transcord/api-reference/recordings/list",
+        "transcord/api-reference/recordings/get",
+        "transcord/api-reference/recordings/delete",
+        "transcord/api-reference/recordings/get-transcript",
+        "transcord/api-reference/recordings/get-audio"
       ]
     }
   ],
   "footerSocials": {
-    "website": "https://transcord.app"
-  },
-  "api": {
-    "baseUrl": "https://app.transcord.app/api",
-    "auth": {
-      "method": "bearer"
-    }
+    "website": "https://cleartextlabs.com"
   }
 }

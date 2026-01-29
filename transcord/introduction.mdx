@@ -1,0 +1,79 @@
+---
+title: Introduction
+description: 'Welcome to the Transcord API documentation'
+---
+
+# Transcord API
+
+Transcord is a call recording and transcription service built for journalists and lawyers. Record phone calls, get AI-powered transcripts, and access everything programmatically through our API.
+
+## What you can do
+
+<CardGroup cols={2}>
+  <Card title="List Recordings" icon="list" href="/api-reference/recordings/list">
+    Get all your call recordings with filtering and pagination
+  </Card>
+  <Card title="Get Transcripts" icon="file-lines" href="/api-reference/recordings/get-transcript">
+    Download transcripts in JSON, plain text, or SRT format
+  </Card>
+  <Card title="Download Audio" icon="headphones" href="/api-reference/recordings/get-audio">
+    Get signed URLs to download or stream audio files
+  </Card>
+  <Card title="MCP Integration" icon="robot" href="/guides/mcp-integration">
+    Connect Transcord to Claude AI for natural language search
+  </Card>
+</CardGroup>
+
+## Quick example
+
+```bash
+curl -X GET "https://app.transcord.app/api/v1/recordings" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```json Response
+{
+  "data": [
+    {
+      "id": "clx1234567890",
+      "toNumber": "+14155551234",
+      "fromNumber": "+14155555678",
+      "duration": 342,
+      "status": "completed",
+      "direction": "outbound",
+      "createdAt": "2026-01-15T10:30:00.000Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 47,
+    "totalPages": 3,
+    "hasMore": true
+  }
+}
+```
+
+## Requirements
+
+- **Pro or Business subscription** - API access is available on Pro ($49/mo) and Business ($99/mo) plans
+- **API Key** - Generate one in [Settings](https://app.transcord.app/settings)
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://app.transcord.app/api/v1
+```
+
+## Need help?
+
+<CardGroup cols={2}>
+  <Card title="Support" icon="envelope" href="mailto:support@cleartextlabs.com">
+    Email us at support@cleartextlabs.com
+  </Card>
+  <Card title="Dashboard" icon="gauge" href="https://app.transcord.app/dashboard">
+    Manage your recordings in the web app
+  </Card>
+</CardGroup>
