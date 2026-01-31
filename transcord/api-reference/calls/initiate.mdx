@@ -1,0 +1,100 @@
+---
+title: Initiate Call
+api: POST /v1/calls
+description: 'Start a recorded call to a destination number'
+---
+
+Initiates a call by first calling your registered phone number, then connecting you to the destination. The call is automatically recorded and transcribed.
+
+## Request Body
+
+<ParamField body="toNumber" type="string" required>
+  The destination phone number to call. Can be formatted with or without country code.
+</ParamField>
+
+## Request
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://app.transcord.app/api/v1/calls" \
+  -H "Authorization: Bearer tr_live_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{"toNumber": "+14155551234"}'
+```
+
+```javascript Node.js
+const response = await fetch('https://app.transcord.app/api/v1/calls', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer tr_live_your_api_key',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ toNumber: '+14155551234' })
+});
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://app.transcord.app/api/v1/calls',
+    headers={
+        'Authorization': 'Bearer tr_live_your_api_key',
+        'Content-Type': 'application/json'
+    },
+    json={'toNumber': '+14155551234'}
+)
+data = response.json()
+```
+</CodeGroup>
+
+## Response
+
+<ResponseField name="callSid" type="string">
+  Unique identifier for the call (Twilio Call SID)
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Call status, will be `initiated`
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Human-readable status message
+</ResponseField>
+
+<ResponseField name="toNumber" type="string">
+  The formatted destination number
+</ResponseField>
+
+```json Response
+{
+  "callSid": "CA1234567890abcdef",
+  "status": "initiated",
+  "message": "Call initiated. You will receive a call shortly.",
+  "toNumber": "+14155551234"
+}
+```
+
+## How It Works
+
+1. Transcord calls your registered phone number
+2. When you answer, you're connected to the destination number
+3. The call is recorded in dual-channel format
+4. After hangup, the recording is transcribed
+5. You receive an email with the transcript
+
+## Requirements
+
+- You must have a phone number registered in your account
+- You must have available minutes (subscription or free tier)
+- The destination number must not be blocked
+
+## Errors
+
+| Status | Description |
+|--------|-------------|
+| `400` | Missing toNumber or invalid/blocked number |
+| `401` | Invalid or missing API key |
+| `403` | No minutes remaining |
+| `404` | User not found |

@@ -1,0 +1,54 @@
+---
+title: List Timezones
+api: GET /v1/timezones
+description: 'Get list of supported timezones'
+---
+
+Returns all supported timezones that can be used when updating user settings.
+
+## Request
+
+```bash cURL
+curl -X GET "https://app.transcord.app/api/v1/timezones" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+## Response
+
+<ResponseField name="data" type="array">
+  Array of timezone objects
+  <Expandable title="timezone object">
+    <ResponseField name="value" type="string">
+      Timezone identifier (IANA format)
+    </ResponseField>
+    <ResponseField name="label" type="string">
+      Human-readable label
+    </ResponseField>
+    <ResponseField name="offset" type="string">
+      UTC offset
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="default" type="string">
+  Default timezone for new accounts
+</ResponseField>
+
+```json Response
+{
+  "data": [
+    { "value": "America/New_York", "label": "Eastern Time (ET)", "offset": "UTC-5/-4" },
+    { "value": "America/Chicago", "label": "Central Time (CT)", "offset": "UTC-6/-5" },
+    { "value": "America/Denver", "label": "Mountain Time (MT)", "offset": "UTC-7/-6" },
+    { "value": "America/Los_Angeles", "label": "Pacific Time (PT)", "offset": "UTC-8/-7" },
+    { "value": "America/Phoenix", "label": "Arizona (no DST)", "offset": "UTC-7" },
+    { "value": "America/Anchorage", "label": "Alaska Time", "offset": "UTC-9/-8" },
+    { "value": "Pacific/Honolulu", "label": "Hawaii Time", "offset": "UTC-10" },
+    { "value": "Europe/London", "label": "London (GMT/BST)", "offset": "UTC+0/+1" },
+    { "value": "Europe/Paris", "label": "Paris (CET)", "offset": "UTC+1/+2" },
+    { "value": "Asia/Tokyo", "label": "Tokyo (JST)", "offset": "UTC+9" },
+    { "value": "UTC", "label": "UTC", "offset": "UTC+0" }
+  ],
+  "default": "America/New_York"
+}
+```

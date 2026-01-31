@@ -1,0 +1,118 @@
+---
+title: List Plans
+api: GET /v1/plans
+description: 'Get available subscription plans'
+---
+
+Returns all active subscription plans with pricing and feature information.
+
+## Request
+
+```bash cURL
+curl -X GET "https://app.transcord.app/api/v1/plans" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+## Response
+
+<ResponseField name="data" type="array">
+  Array of plan objects
+  <Expandable title="plan object">
+    <ResponseField name="id" type="string">
+      Plan ID
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Plan identifier: `starter`, `pro`, or `business`
+    </ResponseField>
+    <ResponseField name="displayName" type="string">
+      Human-readable name
+    </ResponseField>
+    <ResponseField name="price" type="object">
+      Pricing information
+      <Expandable title="properties">
+        <ResponseField name="monthly" type="number">
+          Monthly price in cents
+        </ResponseField>
+        <ResponseField name="currency" type="string">
+          Currency code (USD)
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="minutesIncluded" type="number">
+      Monthly minutes included
+    </ResponseField>
+    <ResponseField name="features" type="array">
+      List of feature flags
+    </ResponseField>
+    <ResponseField name="capabilities" type="object">
+      Feature availability flags
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+```json Response
+{
+  "data": [
+    {
+      "id": "clx123",
+      "name": "starter",
+      "displayName": "Starter",
+      "price": {
+        "monthly": 1900,
+        "currency": "USD"
+      },
+      "minutesIncluded": 100,
+      "features": ["word_export", "incoming_number"],
+      "capabilities": {
+        "apiAccess": false,
+        "wordExport": true,
+        "incomingNumber": true,
+        "callerIdMasking": false,
+        "contactSync": false,
+        "webhooks": false,
+        "mcpIntegration": false
+      }
+    },
+    {
+      "id": "clx456",
+      "name": "pro",
+      "displayName": "Pro",
+      "price": {
+        "monthly": 4900,
+        "currency": "USD"
+      },
+      "minutesIncluded": 500,
+      "features": ["api_access", "word_export", "incoming_number", "caller_id_masking", "contact_sync"],
+      "capabilities": {
+        "apiAccess": true,
+        "wordExport": true,
+        "incomingNumber": true,
+        "callerIdMasking": true,
+        "contactSync": true,
+        "webhooks": false,
+        "mcpIntegration": true
+      }
+    },
+    {
+      "id": "clx789",
+      "name": "business",
+      "displayName": "Business",
+      "price": {
+        "monthly": 9900,
+        "currency": "USD"
+      },
+      "minutesIncluded": 2000,
+      "features": ["api_access", "word_export", "incoming_number", "caller_id_masking", "contact_sync", "webhooks"],
+      "capabilities": {
+        "apiAccess": true,
+        "wordExport": true,
+        "incomingNumber": true,
+        "callerIdMasking": true,
+        "contactSync": true,
+        "webhooks": true,
+        "mcpIntegration": true
+      }
+    }
+  ]
+}
+```

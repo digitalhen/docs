@@ -19,7 +19,7 @@ Include your API key in the `Authorization` header:
 Authorization: Bearer tr_live_your_api_key
 ```
 
-See [Authentication](/authentication) for details on getting and managing API keys.
+See [Authentication](/transcord/authentication) for details on getting and managing API keys.
 
 ## Endpoints
 
@@ -27,17 +27,30 @@ See [Authentication](/authentication) for details on getting and managing API ke
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | [`/v1/me`](/api-reference/account/get-me) | Get current user and subscription info |
+| GET | [`/v1/me`](/transcord/api-reference/account/get-me) | Get current user and subscription info |
+| PUT | [`/v1/me`](/transcord/api-reference/account/update-me) | Update user settings (name, timezone) |
+| GET | [`/v1/subscription`](/transcord/api-reference/account/subscription) | Get detailed subscription and usage info |
+| GET | [`/v1/plans`](/transcord/api-reference/account/plans) | List available subscription plans |
+| GET | [`/v1/timezones`](/transcord/api-reference/account/timezones) | List supported timezones |
+
+### Calls
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | [`/v1/calls`](/transcord/api-reference/calls/initiate) | Initiate a recorded call |
+| GET | [`/v1/calls`](/transcord/api-reference/calls/list) | List recent calls |
 
 ### Recordings
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | [`/v1/recordings`](/api-reference/recordings/list) | List all recordings |
-| GET | [`/v1/recordings/:id`](/api-reference/recordings/get) | Get a single recording with transcript |
-| DELETE | [`/v1/recordings/:id`](/api-reference/recordings/delete) | Delete a recording |
-| GET | [`/v1/recordings/:id/transcript`](/api-reference/recordings/get-transcript) | Get transcript in various formats |
-| GET | [`/v1/recordings/:id/audio`](/api-reference/recordings/get-audio) | Get audio file URL |
+| GET | [`/v1/recordings`](/transcord/api-reference/recordings/list) | List all recordings |
+| GET | [`/v1/recordings/:id`](/transcord/api-reference/recordings/get) | Get a single recording with transcript |
+| DELETE | [`/v1/recordings/:id`](/transcord/api-reference/recordings/delete) | Delete a recording |
+| GET | [`/v1/recordings/:id/transcript`](/transcord/api-reference/recordings/get-transcript) | Get transcript in various formats |
+| GET | [`/v1/recordings/:id/audio`](/transcord/api-reference/recordings/get-audio) | Get audio file URL |
+| GET | [`/v1/recordings/:id/export`](/transcord/api-reference/recordings/export) | Export transcript as Word document |
+| GET | [`/v1/recordings/search`](/transcord/api-reference/recordings/search) | Full-text search in transcripts |
 
 ## Response Format
 

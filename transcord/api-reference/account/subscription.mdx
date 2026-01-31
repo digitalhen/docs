@@ -1,0 +1,143 @@
+---
+title: Get Subscription
+api: GET /v1/subscription
+description: 'Get detailed subscription and usage information'
+---
+
+Returns comprehensive information about your subscription status, plan details, usage, and capabilities.
+
+## Request
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://app.transcord.app/api/v1/subscription" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```javascript Node.js
+const response = await fetch('https://app.transcord.app/api/v1/subscription', {
+  headers: {
+    'Authorization': 'Bearer tr_live_your_api_key'
+  }
+});
+const subscription = await response.json();
+```
+</CodeGroup>
+
+## Response
+
+<ResponseField name="status" type="string">
+  Subscription status: `active`, `trialing`, `past_due`, `canceled`, or `none`
+</ResponseField>
+
+<ResponseField name="plan" type="object">
+  Current plan details (null if no subscription)
+  <Expandable title="properties">
+    <ResponseField name="name" type="string">
+      Plan identifier: `starter`, `pro`, or `business`
+    </ResponseField>
+    <ResponseField name="displayName" type="string">
+      Human-readable plan name
+    </ResponseField>
+    <ResponseField name="minutesIncluded" type="number">
+      Monthly minutes included in plan
+    </ResponseField>
+    <ResponseField name="features" type="array">
+      List of feature flags enabled for this plan
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="usage" type="object">
+  <Expandable title="properties">
+    <ResponseField name="minutesUsed" type="number">
+      Minutes used this billing period
+    </ResponseField>
+    <ResponseField name="minutesRemaining" type="number">
+      Minutes remaining (null for unlimited)
+    </ResponseField>
+    <ResponseField name="minutesIncluded" type="number">
+      Total minutes included
+    </ResponseField>
+    <ResponseField name="bonusMinutes" type="number">
+      Bonus minutes from referrals or promotions
+    </ResponseField>
+    <ResponseField name="trialMinutes" type="number">
+      Trial minutes if applicable
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="billing" type="object">
+  Billing information (null if not subscribed)
+  <Expandable title="properties">
+    <ResponseField name="currentPeriodEnd" type="string">
+      ISO 8601 date when current period ends
+    </ResponseField>
+    <ResponseField name="cancelAtPeriodEnd" type="boolean">
+      Whether subscription will cancel at period end
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="capabilities" type="object">
+  Feature flags for your plan
+  <Expandable title="properties">
+    <ResponseField name="apiAccess" type="boolean">
+      Can use the API
+    </ResponseField>
+    <ResponseField name="wordExport" type="boolean">
+      Can export transcripts as Word documents
+    </ResponseField>
+    <ResponseField name="incomingNumber" type="boolean">
+      Can have a dedicated incoming number
+    </ResponseField>
+    <ResponseField name="callerIdMasking" type="boolean">
+      Can use incoming number as caller ID
+    </ResponseField>
+    <ResponseField name="contactSync" type="boolean">
+      Can sync Google Contacts
+    </ResponseField>
+    <ResponseField name="webhooks" type="boolean">
+      Can configure webhooks
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+```json Response
+{
+  "status": "active",
+  "plan": {
+    "name": "pro",
+    "displayName": "Pro",
+    "minutesIncluded": 500,
+    "features": ["api_access", "word_export", "incoming_number", "contact_sync"]
+  },
+  "usage": {
+    "minutesUsed": 127,
+    "minutesRemaining": 373,
+    "minutesIncluded": 500,
+    "bonusMinutes": 0,
+    "trialMinutes": 0
+  },
+  "billing": {
+    "currentPeriodEnd": "2026-02-15T00:00:00.000Z",
+    "cancelAtPeriodEnd": false
+  },
+  "capabilities": {
+    "apiAccess": true,
+    "wordExport": true,
+    "incomingNumber": true,
+    "callerIdMasking": true,
+    "contactSync": true,
+    "webhooks": false
+  }
+}
+```
+
+## Errors
+
+| Status | Description |
+|--------|-------------|
+| `401` | Invalid or missing API key |
+| `404` | User not found |

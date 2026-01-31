@@ -1,0 +1,134 @@
+---
+title: Search Transcripts
+api: GET /v1/recordings/search
+description: 'Full-text search across all your transcripts'
+---
+
+Search through all your completed transcripts to find specific words or phrases. Returns matching recordings with context snippets and timestamps.
+
+## Query Parameters
+
+<ParamField query="q" type="string" required>
+  Search query (minimum 2 characters). Also accepts `query` as alias.
+</ParamField>
+
+<ParamField query="page" type="integer" default="1">
+  Page number (1-indexed)
+</ParamField>
+
+<ParamField query="limit" type="integer" default="20">
+  Results per page (max 50)
+</ParamField>
+
+## Request
+
+<CodeGroup>
+```bash cURL
+curl -X GET "https://app.transcord.app/api/v1/recordings/search?q=contract" \
+  -H "Authorization: Bearer tr_live_your_api_key"
+```
+
+```javascript Node.js
+const query = encodeURIComponent('contract negotiation');
+const response = await fetch(`https://app.transcord.app/api/v1/recordings/search?q=${query}`, {
+  headers: {
+    'Authorization': 'Bearer tr_live_your_api_key'
+  }
+});
+const results = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://app.transcord.app/api/v1/recordings/search',
+    headers={'Authorization': 'Bearer tr_live_your_api_key'},
+    params={'q': 'contract negotiation'}
+)
+results = response.json()
+```
+</CodeGroup>
+
+## Response
+
+<ResponseField name="query" type="string">
+  The search query that was executed
+</ResponseField>
+
+<ResponseField name="data" type="array">
+  Array of search results
+  <Expandable title="result object">
+    <ResponseField name="recording" type="object">
+      Recording metadata (id, callSid, toNumber, fromNumber, duration, status, direction, createdAt)
+    </ResponseField>
+    <ResponseField name="matches" type="array">
+      Array of matching snippets
+      <Expandable title="match object">
+        <ResponseField name="text" type="string">
+          Context snippet containing the match
+        </ResponseField>
+        <ResponseField name="timestamp" type="number">
+          Timestamp in seconds where match occurs (if available)
+        </ResponseField>
+        <ResponseField name="speaker" type="string">
+          Speaker identifier: `you` or `them` (if available)
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+    <ResponseField name="matchCount" type="number">
+      Number of matches in this recording
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="pagination" type="object">
+  Pagination info (page, limit, total, totalPages, hasMore)
+</ResponseField>
+
+```json Response
+{
+  "query": "contract",
+  "data": [
+    {
+      "recording": {
+        "id": "clx1234567890",
+        "callSid": "CA1234567890abcdef",
+        "toNumber": "+14155551234",
+        "fromNumber": "+14155555678",
+        "duration": 342,
+        "status": "ready",
+        "direction": "outbound",
+        "createdAt": "2026-01-15T10:30:00.000Z"
+      },
+      "matches": [
+        {
+          "text": "...about the contract terms we discussed...",
+          "timestamp": 45.2,
+          "speaker": "them"
+        },
+        {
+          "text": "...I'll send the contract over by Friday...",
+          "timestamp": 128.5,
+          "speaker": "you"
+        }
+      ],
+      "matchCount": 2
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 3,
+    "totalPages": 1,
+    "hasMore": false
+  }
+}
+```
+
+## Errors
+
+| Status | Description |
+|--------|-------------|
+| `400` | Search query too short (minimum 2 characters) |
+| `401` | Invalid or missing API key |

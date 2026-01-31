@@ -1,0 +1,86 @@
+---
+title: Update User
+api: PUT /v1/me
+description: 'Update user settings like name and timezone'
+---
+
+Update your account settings. Currently supports updating name and timezone.
+
+<Info>
+Email and phone number changes require verification and must be done through the web interface at [Settings](https://app.transcord.app/settings).
+</Info>
+
+## Request Body
+
+<ParamField body="name" type="string">
+  Your display name (can be null to clear)
+</ParamField>
+
+<ParamField body="timezone" type="string">
+  Your timezone for timestamps. See [GET /v1/timezones](/transcord/api-reference/account/timezones) for valid values.
+</ParamField>
+
+## Request
+
+<CodeGroup>
+```bash cURL
+curl -X PUT "https://app.transcord.app/api/v1/me" \
+  -H "Authorization: Bearer tr_live_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Smith", "timezone": "America/Los_Angeles"}'
+```
+
+```javascript Node.js
+const response = await fetch('https://app.transcord.app/api/v1/me', {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer tr_live_your_api_key',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'John Smith',
+    timezone: 'America/Los_Angeles'
+  })
+});
+const { user } = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.put(
+    'https://app.transcord.app/api/v1/me',
+    headers={
+        'Authorization': 'Bearer tr_live_your_api_key',
+        'Content-Type': 'application/json'
+    },
+    json={
+        'name': 'John Smith',
+        'timezone': 'America/Los_Angeles'
+    }
+)
+user = response.json()['user']
+```
+</CodeGroup>
+
+## Response
+
+```json Response
+{
+  "user": {
+    "id": "clx1234567890",
+    "email": "you@example.com",
+    "name": "John Smith",
+    "phoneNumber": "4155555678",
+    "timezone": "America/Los_Angeles",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  }
+}
+```
+
+## Errors
+
+| Status | Description |
+|--------|-------------|
+| `400` | Invalid timezone or no valid fields provided |
+| `401` | Invalid or missing API key |

@@ -36,15 +36,38 @@
         ]
       },
       {
-        "group": "API Reference",
+        "group": "API Overview",
         "pages": [
-          "transcord/api-reference/overview",
+          "transcord/api-reference/overview"
+        ]
+      },
+      {
+        "group": "Account",
+        "pages": [
           "transcord/api-reference/account/get-me",
+          "transcord/api-reference/account/update-me",
+          "transcord/api-reference/account/subscription",
+          "transcord/api-reference/account/plans",
+          "transcord/api-reference/account/timezones"
+        ]
+      },
+      {
+        "group": "Calls",
+        "pages": [
+          "transcord/api-reference/calls/initiate",
+          "transcord/api-reference/calls/list"
+        ]
+      },
+      {
+        "group": "Recordings",
+        "pages": [
           "transcord/api-reference/recordings/list",
           "transcord/api-reference/recordings/get",
           "transcord/api-reference/recordings/delete",
           "transcord/api-reference/recordings/get-transcript",
-          "transcord/api-reference/recordings/get-audio"
+          "transcord/api-reference/recordings/get-audio",
+          "transcord/api-reference/recordings/export",
+          "transcord/api-reference/recordings/search"
         ]
       }
     ]
